@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>일정 관련 쿼리문</comment>
+	
+	<entry key="selectCalendarList">
+		SELECT *
+		FROM CALENDAR
+	</entry>
+	
+	<entry key="insertCalendar"> 
+	    INSERT INTO CALENDAR(TITLE, STARTEND) VALUES(?, ?) 
+	</entry>
+	
+ 
+	<entry key="deleteCalendar">
+		DELETE FROM CALENDAR
+		WHERE TITLE =?
+	</entry>
+
+</properties>

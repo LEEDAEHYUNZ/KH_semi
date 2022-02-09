@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>공지사항 쿼리문</comment>
+	
+	<entry key="selectListCount">
+		SELECT COUNT(*) COUNT
+		  FROM NOTICE 
+		 WHERE STATUS='Y'
+	</entry>
+	
+	<entry key="selectList">
+		SELECT *
+		FROM (  SELECT ROWNUM RNUM, A.*
+		        FROM ( SELECT NOTICE_NO, NOTICE_TITLE, EMP_NAME, POST_DATE, VISIT_COUNT
+		                 FROM NOTICE N
+		                 JOIN EMPLOYEE ON (EMP_NO = NOTICE_WRITER) 
+		                WHERE N.STATUS = 'Y'
+		                ORDER BY POST_DATE DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key = "selectTitleSearch">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, EMP_NAME, POST_DATE, VISIT_COUNT, N.STATUS
+		  FROM NOTICE N
+		  JOIN EMPLOYEE ON (EMP_NO = NOTICE_WRITER)
+		 WHERE NOTICE_TITLE LIKE ?
+	</entry>
+	
+	<entry key="increaseCount">
+		UPDATE NOTICE 
+		   SET VISIT_COUNT = VISIT_COUNT + 1
+		 WHERE NOTICE_NO = ?
+		   AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectNotice">
+		SELECT NOTICE_NO, EMP_NAME, POST_DATE, VISIT_COUNT, NOTICE_TITLE, NOTICE_CONTENT 
+		  FROM NOTICE N
+		  JOIN EMPLOYEE ON (NOTICE_WRITER = EMP_NO)
+		 WHERE NOTICE_NO = ?
+		   AND N.STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectAttachment">
+		SELECT FILE_NO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH
+		  FROM ATTACHMENT
+		 WHERE REF_NNO = ?  
+	       AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="insertNotice">
+		INSERT INTO NOTICE(NOTICE_NO, NOTICE_WRITER, NOTICE_TITLE, NOTICE_CONTENT)
+		VALUES(SEQ_NNO.NEXTVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="insertAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_NNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL, SEQ_NNO.CURRVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="updateNotice">
+		UPDATE NOTICE
+		   SET NOTICE_TITLE = ?
+		   	 , NOTICE_CONTENT = ?
+		 WHERE NOTICE_NO = ?
+	</entry>
+	
+	<entry key="updateAttachment">
+		UPDATE ATTACHMENT
+		   SET ORIGIN_NAME = ?
+		     , CHANGE_NAME = ?
+		     , FILE_PATH = ?
+		     , UPLOAD_DATE = SYSDATE
+		 WHERE FILE_NO = ?
+	</entry>
+	
+	<entry key="insertNewAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_NNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key="deleteNotice">
+		UPDATE NOTICE
+		   SET STATUS = 'N'
+		 WHERE NOTICE_NO = ?
+	</entry>
+	
+	<entry key="selectNoticeMainList">
+		SELECT *
+		FROM (
+		        SELECT ROWNUM RNUM, A.*
+		        FROM(   SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, EMP_NAME, POST_DATE, VISIT_COUNT, N.STATUS
+		                FROM NOTICE N
+		                JOIN EMPLOYEE ON (NOTICE_WRITER = EMP_NO)
+		                WHERE N.STATUS ='Y'
+		                ORDER BY NOTICE_NO DESC) A)
+	</entry>
+	
+</properties>

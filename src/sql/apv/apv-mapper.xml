@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>결재 쿼리문</comment>
+	
+	<entry key="selectListCount">
+		SELECT COUNT(*) COUNT
+		  FROM APV
+		 WHERE STATUS='Y'
+	</entry>
+	
+	<entry key="selectList">
+		SELECT *
+		FROM (  SELECT ROWNUM RNUM, B.*
+		        FROM ( SELECT APV_NO, APV_TITLE, EMP_NAME, POST_DATE
+		                 FROM APV A
+		                 JOIN EMPLOYEE ON (APV_WRITER = EMP_NO) 
+		                WHERE A.STATUS = 'Y'
+		                ORDER BY APV_NO DESC) B)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+
+	<entry key="selectApv">
+		SELECT APV_NO, EMP_NAME, POST_DATE, APV_TITLE, APV_CONTENT 
+		  FROM APV A
+		  JOIN EMPLOYEE ON (APV_WRITER = EMP_NO)
+		 WHERE APV_NO = ?
+		   AND A.STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectAttachment">
+		SELECT FILE_NO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH
+		  FROM ATTACHMENT
+		 WHERE REF_ANO = ?  
+	       AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="insertApv">
+		INSERT INTO APV(APV_NO, APV_WRITER, APV_TITLE, APV_CONTENT)
+		VALUES(SEQ_ANO.NEXTVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="insertAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_ANO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL, SEQ_ANO.CURRVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="updateApv">
+		UPDATE APV
+		   SET APV_TITLE = ?
+		   	 , APV_CONTENT = ?
+		 WHERE APV_NO = ?
+	</entry>
+	
+	<entry key="updateAttachment">
+		UPDATE ATTACHMENT
+		   SET ORIGIN_NAME = ?
+		     , CHANGE_NAME = ?
+		     , FILE_PATH = ?
+		     , UPLOAD_DATE = SYSDATE
+		 WHERE FILE_NO = ?
+	</entry>
+	
+	<entry key="insertNewAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_ANO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key="deleteApv">
+		UPDATE APV
+		   SET STATUS = 'N'
+		 WHERE APV_NO = ?
+	</entry>
+	
+	
+</properties>

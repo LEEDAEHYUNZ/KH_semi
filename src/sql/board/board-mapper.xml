@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>경조사 쿼리문</comment>
+	
+	<entry key="selectListCount">
+		SELECT COUNT(*) COUNT
+		  FROM BOARD 
+		 WHERE STATUS='Y'
+	</entry>
+	
+	<entry key="selectList">
+		SELECT *
+		FROM (  SELECT ROWNUM RNUM, A.*
+		        FROM ( SELECT BOARD_NO, BOARD_TITLE, EMP_NAME, POST_DATE, VISIT_COUNT
+		                 FROM BOARD B
+		                 JOIN EMPLOYEE ON (EMP_NO = BOARD_WRITER) 
+		                WHERE B.STATUS = 'Y'
+		                ORDER BY POST_DATE DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key = "selectTitleSearch">
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, EMP_NAME, POST_DATE, VISIT_COUNT, B.STATUS
+		  FROM BOARD B
+		  JOIN EMPLOYEE ON (EMP_NO = BOARD_WRITER)
+		 WHERE BOARD_TITLE LIKE ?
+	</entry>
+	
+	<entry key = "selectWriterSearch">
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, EMP_NAME, POST_DATE, VISIT_COUNT, B.STATUS
+		  FROM BOARD B
+		  JOIN EMPLOYEE ON (EMP_NO = BOARD_WRITER)
+		 WHERE EMP_NAME LIKE ?
+	</entry>
+	
+	<entry key="increaseCount">
+		UPDATE BOARD 
+		   SET VISIT_COUNT = VISIT_COUNT + 1
+		 WHERE BOARD_NO = ?
+		   AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectBoard">
+		SELECT BOARD_NO, EMP_NAME, POST_DATE, VISIT_COUNT, BOARD_TITLE, BOARD_CONTENT 
+		  FROM BOARD B
+		  JOIN EMPLOYEE ON (BOARD_WRITER = EMP_NO)
+		 WHERE BOARD_NO = ?
+		   AND B.STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectAttachment">
+		SELECT FILE_NO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH
+		  FROM ATTACHMENT
+		 WHERE REF_BNO = ?  
+	       AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="insertBoard">
+		INSERT INTO BOARD(BOARD_NO, BOARD_WRITER, BOARD_TITLE, BOARD_CONTENT)
+		VALUES(SEQ_BNO.NEXTVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="insertAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL, SEQ_BNO.CURRVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="updateBoard">
+		UPDATE BOARD
+		   SET BOARD_TITLE = ?
+		   	 , BOARD_CONTENT = ?
+		 WHERE BOARD_NO = ?
+	</entry>
+	
+	<entry key="updateAttachment">
+		UPDATE ATTACHMENT
+		   SET ORIGIN_NAME = ?
+		     , CHANGE_NAME = ?
+		     , FILE_PATH = ?
+		     , UPLOAD_DATE = SYSDATE
+		 WHERE FILE_NO = ?
+	</entry>
+	
+	<entry key="insertNewAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_BNO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH)
+		VALUES(SEQ_FNO.NEXTVAL, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key="deleteBoard">
+		UPDATE BOARD
+		   SET STATUS = 'N'
+		 WHERE BOARD_NO = ?
+	</entry>
+	
+	<entry key="selectBoardMainList">
+		SELECT *
+		FROM (
+		        SELECT ROWNUM RNUM, A.*
+		        FROM(   SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, EMP_NAME, POST_DATE, VISIT_COUNT, B.STATUS
+		                FROM BOARD B
+		                JOIN EMPLOYEE ON (BOARD_WRITER = EMP_NO)
+		                WHERE B.STATUS ='Y'
+		                ORDER BY BOARD_NO DESC) A)
+	</entry>
+	
+</properties>

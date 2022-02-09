@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>회원가입 관련 쿼리문들</comment>
+	
+	<entry key="loginEmployee">
+		SELECT *
+		FROM EMPLOYEE
+		WHERE EMP_NO = ?
+		  AND EMP_PWD = ?
+	      AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="insertEmployee">
+		INSERT INTO EMPLOYEE(EMP_NO, EMP_NAME, EMP_PWD, EMAIL, PHONE, EMPID_NO, ADDRESS)
+		VALUES(?, ?, ?, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key="serachEmpNo">
+		SELECT EMP_NO
+		  FROM EMPLOYEE 
+		 WHERE EMP_NAME = ?
+		   AND PHONE = ?
+		   AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="searchEmpPwd">
+		SELECT EMP_PWD
+		  FROM EMPLOYEE
+		 WHERE EMP_NO = ?
+		   AND PHONE = ?
+		   AND STATUS ='Y'
+	</entry>
+	
+	<entry key="empNoCheck">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE EMP_NO = ?
+	</entry>
+	
+	<entry key="updateEmployee">
+		UPDATE EMPLOYEE
+  		  SET PHONE = ?
+      		  , EMAIL = ?
+      	    , ADDRESS = ?
+   		WHERE EMP_NO = ?
+   		  AND EMP_NAME = ?
+	</entry>
+	
+	<entry key="selectEmployee">
+		SELECT *
+		FROM EMPLOYEE
+		WHERE EMP_NO = ?
+		  AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="updatePwdEmployee">
+		UPDATE EMPLOYEE
+		   SET EMP_PWD = ?
+		 WHERE EMP_NO = ?
+		   AND EMP_PWD = ?
+	</entry>
+	
+	<entry key="selectListCount">
+		SELECT COUNT(*) COUNT
+		FROM EMPLOYEE
+		WHERE STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectList">
+		SELECT *
+		FROM (
+		        SELECT ROWNUM RNUM, A.*
+		        FROM(   SELECT EMP_NO, EMP_NAME, DEPT_ID, JOB_CODE, ADDRESS, EMAIL, PHONE, HIRE_DATE
+		                FROM EMPLOYEE
+		                WHERE STATUS ='Y'
+		                ORDER BY EMP_NO ASC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key = "select1Search">
+		SELECT * FROM EMPLOYEE
+		WHERE EMP_NAME LIKE ?
+	</entry>
+	
+	<entry key = "select2Search">
+		SELECT * FROM EMPLOYEE
+		WHERE JOB_CODE LIKE ?
+	</entry>
+	
+	<entry key = "select3Search">
+		SELECT * FROM EMPLOYEE
+		WHERE DEPT_ID LIKE ?
+	</entry>
+	<entry key="updateManage"> UPDATE EMPLOYEE SET DEPT_ID =? ,JOB_CODE = ? ,STATUS = ? WHERE EMP_NO = ? </entry>
+	<entry key="deleteManage"> DELETE EMPLOYEE WHERE EMP_NO = ? </entry>
+	<entry key="selectEmployeeList"> SELECT * FROM EMPLOYEE </entry>
+	
+	<entry key = "select4Search">
+      SELECT * FROM EMPLOYEE
+      WHERE EMP_NAME LIKE ?
+   </entry>
+   
+   <entry key = "select5Search">
+      SELECT * FROM EMPLOYEE
+      WHERE JOB_CODE LIKE ?
+   </entry>
+   
+   <entry key = "select6Search">
+      SELECT * FROM EMPLOYEE
+      WHERE DEPT_ID LIKE ?
+   </entry> 
+</properties>
+	
